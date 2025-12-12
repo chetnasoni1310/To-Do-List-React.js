@@ -1,0 +1,39 @@
+Basic and Must requirements -->> 
+1. We should add the task  ( input +  add cta )
+2. Edit it  ( edit cta )
+3. Remove it when done (delete cta )
+4. Data should persist ( not vanish on refresh , can use localStorage )
+5. Responsive design pattern
+6. when no task , clean ui with no task yet ! add new task type message
+7. Keyboard support
+8. Completed or not 
+9. Done checkbox ( toggling nature )
+10. Unique id for tracking it 
+
+
+Enhancements --->>
+1. Drag and drop reOrdering task
+2. Dark mode
+3. Tags of category ( work , personal ,urgent etc...)
+4. Deadlines 
+5. Reminders
+6. Priority Levels
+7. SubTasks
+8. Completed Archives of 1 day
+9. Cloud storage
+10. User Authentication
+11. Analytics
+12. Streak
+13. Onboarding
+
+
+
+
+Optional -->>
+1. filter task (completed  , ongoing , pending )
+
+
+
+ 
+
+
