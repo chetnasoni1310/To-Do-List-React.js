@@ -1,0 +1,63 @@
+// The SINGLE biggest change: createSlice
+
+// Instead of:
+// taskType
+// taskAction
+// taskReducer
+
+// You get ONE file:
+// tasksSlice.js
+
+// This file contains:
+// initial state
+// reducers
+// actions (auto-generated)
+
+
+*************************************************************************************
+Immer works only inside reducers created by RTK. !!!IMPORTANT!!!
+✅ We are mutating a draft, not the real state.
+✅ Immer converts it to immutable updates.
+✅ This is exactly how Redux Toolkit is designed to work.
+
+*************************************************************************************
+
+🚨 VERY IMPORTANT RULE
+❌ In CLASSIC Redux
+state.push()        // ❌ WRONG
+state.completed = true // ❌ WRONG
+
+✅ In REDUX TOOLKIT
+state.push()        // ✅ SAFE
+state.completed = true // ✅ SAFE
+
+
+ONLY inside createSlice reducers.
+
+*************************************************************************************
+
+
+In Redux Toolkit, you are NOT mutating the real state.
+You are mutating a DRAFT of the state.
+
+This is because of Immer.
+
+🔥 What is Immer (the magic behind RTK)?
+Redux Toolkit uses a library called Immer internally.
+
+Immer does this:
+Gives your reducer a draft copy of state
+Lets you write mutating-looking code
+Tracks every change you make
+Produces a new immutable state under the hood
+
+-->>><<<---
+So this:
+state.push(action.payload)
+
+is internally converted to:
+return [...state, action.payload]
+
+You didn’t write immutable code — Immer did.
+
+*************************************************************************************

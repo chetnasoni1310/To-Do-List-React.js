@@ -24,13 +24,21 @@ const STORAGE_KEY = 'todo_tasks';
 
 export const loadTasks = () => {
    try{
+
     const storedTasks = localStorage.getItem(STORAGE_KEY);
+    // What this does:
+    // Tries to read "todo_tasks" from browser storage
+    // Returns:
+    // a string → "["task1","task2"]"
+    // OR null if nothing exists
+
+
     if(!storedTasks){
         return [];
     }
-
-    return JSON.parse(storedTasks);
-   }catch(error)
+   return JSON.parse(storedTasks);
+   }
+   catch(error)
    {
     console.error("Failed to load tasks from localStorage ",error);
     return [];
