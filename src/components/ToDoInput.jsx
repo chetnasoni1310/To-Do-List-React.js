@@ -119,3 +119,7 @@ export default ToDoInput;
 // -> to make the description textarea instead of input text
 // random title generation from different inputs
 // add regex to the input 
+// LocalStorage
+// Toggle complete working  still not implemented
+// Validation working
+// Redux data flow.

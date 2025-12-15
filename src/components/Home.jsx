@@ -28,7 +28,6 @@ function Home() {
 
   const deleteTaskHandler = (taskID) => {
     setTask((prev) => prev.filter((task) => task.id !== taskID));
-
     console.log(taskID);
   };
 

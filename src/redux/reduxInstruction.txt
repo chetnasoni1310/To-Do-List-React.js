@@ -1,0 +1,218 @@
+Action → what happened
+Reducer → how state changes
+Store → where state lives
+
+
+🔄 The Redux Cycle (MEMORIZE THIS)
+UI
+ ↓ dispatch
+Action
+ ↓
+Reducer
+ ↓
+Store (new state)
+ ↓
+UI re-renders
+
+
+
+🔄 Correct flow 
+type.js
+ ↓ 
+action.js
+ ↓
+reducer.js
+ ↓
+implement reducer logic using our existing react state logic
+ ↓
+create store in store.js
+
+
+
+
+*************************************************************************************
+****************************   Phase 1 — Identify what goes to Redux  ***************
+
+1. Redux m shift hone se pehle dekho , humara jo store hai usmai kon konsi state jaayegi 
+    “Only state that is global, shared, and meaningful across components goes to Redux.”
+    Is used by several components 
+    Needs to survive navigation / refresh
+    Needs to be editable from many places
+
+2. UI / Ephemeral State (Redux ❌) -->> inko humein redux mai nahi daalna hai 
+   This is temporary UI behavior.
+   Characteristics:
+   Local to ONE component
+   Exists only for user interaction
+   Reset when component unmounts
+   Does NOT represent real data
+   No need to persist or share    
+
+3. 🎯 Redux Decision Checklist (Use this EVERY time)
+
+Ask these 5 questions for any state:
+
+1️⃣ Is this used by more than one component?
+2️⃣ Does this represent real app data?
+3️⃣ Should this survive refresh or navigation?
+4️⃣ Will multiple actions modify this state?
+5️⃣ Will I ever need to debug / replay changes?
+
+If 3 or more answers are YES → Redux
+Otherwise → local state   
+
+If it’s data → Redux
+If it’s behavior → local state
+
+
+
+
+
+
+
+*************************************************************************************
+****************************    PHASE 2 - STATE SHAPE  ******************************
+
+🔑 Golden Principle of State Shape
+Design state based on “what the app knows”, not “what the UI looks like”.
+
+
+
+
+
+
+
+*************************************************************************************
+****************************    PHASE 3 - ACTION  ******************************
+🧠 What is an “Action” in Redux (in plain English)
+An action answers one simple question:
+“What just happened in the app?”
+
+NOT:
+how it happened
+not UI details
+not implementation logic
+Just the event.
+
+
+
+Examples in real life:
+“Task added”
+“Task deleted”
+“Task title edited”
+“Task marked completed”
+That’s it.
+
+
+Key rule of Phase 3
+Every place in your app where you currently call setTasks(...)
+becomes a Redux action.
+No exceptions.
+
+
+Step 1: List all the ways your tasks change today
+Look at your current props-based app.
+You already have functions like:
+
+handleAddTask
+deleteTask
+editTask
+checkbox toggle
+
+Each of these changes the tasks array.
+So they must become Redux actions.
+
+**********************   functions -> becomes -> actions ******************
+
+
+
+
+
+*************************************************************************************
+****************************  PHASE 4 — Writing reducers ****************************
+
+A reducer is just:
+A pure function that decides how state changes when an action happens.
+
+Read that again.
+It does NOT trigger events
+It does NOT talk to UI
+It does NOT call APIs
+It does NOT mutate state
+
+It only answers this question:
+❓ “Given the current state and an action, what should the NEW state be?”
+
+Phase 4 (Reducers) is the heart of Redux — and once this phase clicks, Redux stops feeling scary.
+
+Every reducer follows this mental structure:
+(currentState, action) → newState
+
+
+
+
+✅ Reducer must be pure
+Same input → same output
+No randomness
+No side effects
+
+❌ Reducer must NOT:
+Mutate existing state
+Use setTimeout, fetch, localStorage
+Change variables outside
+
+✅ Reducer MUST:
+Return a new object / array
+Leave untouched state as-is
+
+
+
+🧱 Step 1: Initial State
+Reducer always needs a starting point.
+For your app, the initial state is simply:
+No tasks yet
+
+Empty array
+Conceptually:
+initialState = {
+  tasks: []
+}
+This matches your React useState([]).
+
+
+
+
+🧱 Step 2: Reducer Skeleton (Mental Model)
+Every reducer follows this shape:
+
+function reducer(state = initialState, action) {
+  switch(action.type) {
+    case ACTION_1:
+      return updatedState
+
+    case ACTION_2:
+      return updatedState
+
+    default:
+      return state
+  }
+}
+
+
+Why default: return state?
+Because if Redux dispatches an unknown action,
+state should not change.
+
+Redux depends on immutability to:
+Detect changes
+Trigger re-renders
+Enable time-travel debugging
+
+So reducers always:
+Create new arrays
+Create new objects
+No UI logic.
+No prompts.
+No validation.
+
+
