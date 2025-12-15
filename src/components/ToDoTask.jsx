@@ -1,38 +1,52 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { MdDeleteSweep } from "react-icons/md";
 import { MdModeEdit } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { deleteTask, editTask } from "../redux/taskAction";
 
 
-function ToDoTask({ data, editTask, deleteTask }) {
+function ToDoTask({data}) {
   const { id, title, description } = data;
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [tempTitle, setTempTitle] = useState(title);
+  const [isChecked, setIsChecked] = useState(false);
+  const dispatch = useDispatch();
+  const inputRef = useRef();
+
 
   const deleteTaskHandler = () => {
-    deleteTask(id);
+    dispatch(deleteTask(id));
   };
 
 
   const editTaskHandler = () => {
     const newTitle = prompt("Enter the new title : ", title);
+    if (newTitle === null) return;
+    
     const newDescription = prompt(
       "Enter the new description : ",
       description || ""
     );
 
-    editTask(id, newTitle, newDescription);
+    dispatch(editTask( id , { title : newTitle , description : newDescription }))
+    // because in edit , we do have payloads as a object containing fields : id and updates
   };
 
 
   const editTaskTitle = () => {
     setTempTitle(title); // prefilled with existing title
     setIsEditingTitle(true);
+
+    // wait for input to mount , and only select when it do exists
+    setTimeout(() => {
+      inputRef.current?.select();
+    },0);
   };
 
 
   const saveEditedTitle = () => {
     if (tempTitle.trim() === "") return;
-    editTask(id, tempTitle, description);
+    dispatch(editTask(id , { title : tempTitle , description ,}));
     setIsEditingTitle(false);
   };
 
@@ -44,7 +58,6 @@ function ToDoTask({ data, editTask, deleteTask }) {
   };
 
   
-  const [isChecked, setIsChecked] = useState(false);
   return (
     <div className="w-[70%] px-4 py-3 bg-zinc-800 rounded-3xl text-white flex gap-4 items-center justify-between">
       <div className="title  flex justify-center items-center gap-4">
@@ -77,6 +90,7 @@ function ToDoTask({ data, editTask, deleteTask }) {
           // aur agar false hai toh firse h1 bnn jaayega
           isEditingTitle ? (
             <input
+              ref = {inputRef}
               type="text"
               value={tempTitle}
               onChange={(e) => setTempTitle(e.target.value)}
