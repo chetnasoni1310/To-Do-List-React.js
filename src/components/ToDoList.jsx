@@ -2,7 +2,7 @@ import React from "react";
 import ToDoTask from "./ToDoTask";
 import { useSelector } from "react-redux";
 
-function ToDoList({ editTask, deleteTask }) {
+function ToDoList() {
   const tasks = useSelector((state) => state.tasks);
   if (tasks.length === 0) {
     return (
@@ -17,12 +17,10 @@ function ToDoList({ editTask, deleteTask }) {
 
   return (
     <div className="mt-12 mx-auto w-5/6 py-14 px-2 bg-zinc-600 flex flex-col justify-center items-center gap-8 rounded-xl">
-      {tasks.map((item, index) => (
+      {tasks.map((item) => (
         <ToDoTask
-          key={index}
+          key={item.id}
           data={item}
-          editTask={editTask}
-          deleteTask={deleteTask}
         />
       ))}
     </div>
