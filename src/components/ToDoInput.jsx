@@ -1,6 +1,20 @@
-import React, { useState } from "react";
+// Conceptually, your flow was:
+// User types → handleAddTask →
+// parent function → setTasks
 
-function ToDoInput({addNewTask}) {
+
+// Now Redux flow becomes:
+// User types → handleAddTask →
+// dispatch(addTask(task)) →
+// store → reducer → state update
+
+
+
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addTask } from "../redux/taskAction";
+
+function ToDoInput() {
 
 
   // const [title, setTitle] = useState("");
@@ -10,8 +24,12 @@ function ToDoInput({addNewTask}) {
     description: "",
     //use this one instead of above 2 separate one's
   });
+ 
 
   // const inputValidationRegex = /^[A-za-z0-9{3,} ,.!?-]&/
+
+  
+  const dispatch = useDispatch();
 
   const handleTitle = (e) => {
     const changedTitle = e.target.value;
@@ -39,6 +57,7 @@ function ToDoInput({addNewTask}) {
     //validate the title input
     if (val.title.trim() === "") {
       alert("Adding title of task is must!");
+      return;
     }
 
 
@@ -49,8 +68,9 @@ function ToDoInput({addNewTask}) {
       description: val.description,
       completed: false,
     };
-    addNewTask(newTask);
-
+    // addNewTask(newTask);  ->> this was before redux
+    dispatch(addTask(newTask));  // --> this is after redux
+ 
 
     console.log(val.title);
     console.log(val.description);
@@ -67,6 +87,10 @@ function ToDoInput({addNewTask}) {
     console.log(val.title);
     console.log(val.description);
   };
+
+
+
+
 
   return (
     <div className="w-5/6 bg-zinc-600 mx-auto rounded-xl text-white border-2 border-gray-200 py-6">
@@ -123,3 +147,10 @@ export default ToDoInput;
 // Toggle complete working  still not implemented
 // Validation working
 // Redux data flow.
+// id kko hum date.now() se generate krwa rhe h abhi , but i want them to be 1,2,3...
+// Move checkbox (completed) into Redux
+// 2️⃣ Add localStorage persistence via Redux
+// 3️⃣ Replace Date.now() with incremental IDs
+// tab navigation --> when i press enter it shifts from title -> to -> description and then to addTask
+
+
