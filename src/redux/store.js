@@ -17,8 +17,22 @@
 
 import {createStore} from 'redux';
 import taskReducer from './taskReducer';
+import { loadTasks , saveTasks } from './storage';
 
+// const store = createStore(taskReducer);
+// export default store ;
+//pehle yeh kr rhe the , but die to local storage , we will do this -->>>
 
-const store = createStore(taskReducer);
+const preloadedState = {
+    tasks : loadTasks(),
+}
 
-export default store ;
+const store = createStore(taskReducer , preloadedState);
+
+//save tasks on every state change 
+store.subscribe( () => {
+    const state = store.getState();
+    saveTasks(state.tasks);
+});
+
+export default store;
